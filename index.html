@@ -219,25 +219,28 @@
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  // PC hover
-  noBtn.addEventListener('mouseover', moveNoButton);
+  function handleNoInteraction(e) {
+  if (e) e.preventDefault();
 
-  // Mobile touch
-  noBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault();
+  noClickCount++;
+  scale += 0.4;
+  yesBtn.style.transform = `scale(${scale})`;
+
+  const messageIndex = noClickCount % messages.length;
+  question.textContent = messages[messageIndex];
+
+  setTimeout(() => {
     moveNoButton();
-  });
+  }, 100);
+}
 
-  // If she somehow clicks No
-  noBtn.addEventListener('click', () => {
-    noClickCount++;
-    scale += 0.4;
-    yesBtn.style.transform = `scale(${scale})`;
+// Desktop
+noBtn.addEventListener('mouseenter', handleNoInteraction);
 
-    const messageIndex = noClickCount % messages.length;
-    question.textContent = messages[messageIndex];
-  });
+// Mobile
+noBtn.addEventListener('click', handleNoInteraction);
 
+ 
   // Floating hearts
   function createHeart() {
     const heart = document.createElement('div');
